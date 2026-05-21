@@ -1,0 +1,19 @@
+[project]
+name = "wifi-security-tray"
+version = "0.1.0"
+description = "Windows tray app that monitors Wi-Fi security and alerts on risky networks."
+requires-python = ">=3.11"
+dependencies = [
+    "pillow>=10.0",
+    "pystray>=0.19",
+    "winotify>=1.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pyinstaller>=6.0",
+    "pytest>=8.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
