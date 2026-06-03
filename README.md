@@ -1,121 +1,95 @@
-# Wi-Fi Security Tray
+# WiFi Risk Monitor
 
-A clean Windows tray-first Wi-Fi security monitor.
+WiFi Risk Monitor is a Windows tray-based security utility that monitors the active Wi-Fi connection, detects unsafe wireless networks, and helps users respond to risky connections.
 
-## Current MVP
+## Features
 
-- Detects the active Wi-Fi network using Windows `netsh`.
-- Classifies the network as `safe`, `risky`, `trusted`, `unknown`, or `paused`.
-- Shows a tray icon status.
-- Sends a Windows toast notification when a risky network is detected.
-- Writes local JSONL audit events.
-- Supports a simple trusted network list.
-- Supports simulation mode for testing risky/open Wi-Fi without changing networks.
-- Includes a settings window for protection, notifications, scan interval, and simulation.
-- Shows a separate paused state when protection is disabled.
-- Can integrate with an existing VPN app/profile through configurable protection modes.
-- Includes an event log viewer for recent Wi-Fi security events.
-- Includes a trusted networks manager for adding/removing trusted SSIDs/BSSIDs.
+- Detects the active Wi-Fi network using Windows `netsh`
+- Extracts SSID, BSSID, authentication type, cipher type, signal, and connection state
+- Classifies networks as `safe`, `risky`, `trusted`, `protected`, `unknown`, or `paused`
+- Shows dynamic tray icon status
+- Sends Windows toast notifications for risky Wi-Fi
+- Writes local JSONL audit logs
+- Includes simulation mode for testing open Wi-Fi detection
+- Provides a settings window for scan interval, notifications, simulation, and protection mode
+- Supports trusted networks management
+- Includes a network details window
+- Includes an event log viewer
+- Integrates with an existing VPN app/profile
+- Can be packaged as a standalone Windows executable and installer
 
-## Run
+## Run From Source
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\activate
 pip install -r requirements.txt
 python -m app.main
-```
+Test Risky Wi-Fi With Simulation
+Open the tray menu:
 
-## Test Risky Wi-Fi With Simulation
-
-Open `data/settings.json` after the app has run once and change:
-
-```json
-"simulation": {
-  "enabled": true,
-  "ssid": "Free Public WiFi",
-  "bssid": "11:22:33:44:55:66",
-  "authentication": "Open",
-  "cipher": "None",
-  "signal": "82%",
-  "connected": true
-}
-```
-
-Then use **Scan Now** from the tray menu, or wait for the next scan. The tray should turn red and show a risky Wi-Fi notification.
-
-Set `"enabled": false` inside `simulation` to return to real Wi-Fi detection.
-
-You can also change simulation from the tray menu:
-
-```text
 Right-click tray icon -> Settings -> Use simulated Wi-Fi -> Save
-```
+Example simulated risky network:
 
-## VPN Integration
+SSID: Free Public WiFi
+BSSID: 11:22:33:44:55:66
+Authentication: Open
+Cipher: None
+Signal: 82%
+Connected: checked
+Then run:
 
-The app does not provide a VPN service. It can integrate with a VPN you already use.
+Right-click tray icon -> Scan Now
+Expected result:
+
+Tray icon turns red
+Status changes to risky
+Windows notification appears
+Event is written to the audit log
+To return to real Wi-Fi detection, disable simulation from Settings.
+
+VPN Integration
+The app does not provide a VPN service. It integrates with a VPN already installed or configured by the user.
 
 Protection modes:
 
-- `notify_only`: warn on risky Wi-Fi.
-- `require_vpn`: risky Wi-Fi is considered protected only when the configured VPN is active.
-- `launch_vpn`: when risky Wi-Fi is detected, run the configured VPN command.
+notify_only: warn when risky Wi-Fi is detected
+require_vpn: mark risky Wi-Fi as protected only when VPN is active
+launch_vpn: run the configured VPN command when risky Wi-Fi is detected
+Example VPN commands:
 
-Examples of VPN command values:
-
-```text
 rasdial MyVpnProfile
 start "" "C:\Program Files\Proton\VPN\ProtonVPN.Launcher.exe"
-```
-
-Use the tray menu:
-
-```text
-Right-click tray icon -> Settings -> Protection Mode
-Right-click tray icon -> Connect VPN Now
-```
-
-## Package EXE
-
-Install dependencies, then run:
-
-```powershell
+Build Executable
 .\scripts\build_exe.ps1
-```
+Output:
 
-The executable is created at:
-
-```text
 dist\WifiSecurityTray.exe
-```
+Build Installer
+Install Inno Setup 6, build the executable, then run:
 
-## Build Installer
-
-Install Inno Setup 6, build the exe, then run:
-
-```powershell
 .\scripts\build_installer.ps1
-```
+Output:
 
-The installer is created at:
-
-```text
 packaging\Output\WifiSecurityTraySetup.exe
-```
+Installed app data is stored in:
 
-The installed app stores settings and logs in:
-
-```text
 %LOCALAPPDATA%\WifiSecurityTray
-```
-
-## Project Layout
-
-```text
-app/          Tray entrypoint and tray UI
-core/         Domain logic: config, risk, models, audit logging
-platforms/    Windows-specific Wi-Fi and notification adapters
-data/         Runtime config and logs, created automatically
-tests/        Unit tests
-```
+Project Structure
+app/          Tray application and Tkinter windows
+core/         Config, models, risk engine, protection logic, audit logging
+platforms/   Windows-specific Wi-Fi, VPN, process, and notification adapters
+scripts/     Build scripts for executable and installer
+packaging/   Inno Setup installer script
+tests/       Unit tests
+Tech Stack
+Python
+PyStray
+Tkinter
+Winotify
+Pillow
+PyInstaller
+Inno Setup
+unittest
+Status
+The project is under active development as a Windows Wi-Fi security monitoring utility.
