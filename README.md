@@ -25,6 +25,7 @@ python -m venv .venv
 .\.venv\Scripts\activate
 pip install -r requirements.txt
 python -m app.main
+
 Test Risky Wi-Fi With Simulation
 Open the tray menu:
 
@@ -93,3 +94,4 @@ Inno Setup
 unittest
 Status
 The project is under active development as a Windows Wi-Fi security monitoring utility.
+```
