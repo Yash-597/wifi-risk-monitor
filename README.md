@@ -61,11 +61,13 @@ Example VPN commands:
 
 rasdial MyVpnProfile
 start "" "C:\Program Files\Proton\VPN\ProtonVPN.Launcher.exe"
+
 Build Executable
 .\scripts\build_exe.ps1
 Output:
 
 dist\WifiSecurityTray.exe
+
 Build Installer
 Install Inno Setup 6, build the executable, then run:
 
@@ -76,6 +78,7 @@ packaging\Output\WifiSecurityTraySetup.exe
 Installed app data is stored in:
 
 %LOCALAPPDATA%\WifiSecurityTray
+
 Project Structure
 app/          Tray application and Tkinter windows
 core/         Config, models, risk engine, protection logic, audit logging
@@ -83,6 +86,7 @@ platforms/   Windows-specific Wi-Fi, VPN, process, and notification adapters
 scripts/     Build scripts for executable and installer
 packaging/   Inno Setup installer script
 tests/       Unit tests
+
 Tech Stack
 Python
 PyStray
