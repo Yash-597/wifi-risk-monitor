@@ -20,10 +20,7 @@ class WifiSecurityTrayApp:
     def __init__(self) -> None:
         self.settings = load_settings()
         self.current_network = WifiNetwork(None, None, None, None, None, False)
-        self.current_assessment = RiskAssessment(
-            RiskLevel.UNKNOWN,
-            "Waiting for first Wi-Fi scan.",
-        )
+        self.current_assessment = RiskAssessment(RiskLevel.UNKNOWN, "Waiting for first Wi-Fi scan.",)
         self.last_alert_key: tuple[str | None, str] | None = None
         self.launched_vpn_networks: set[str] = set()
         self.stop_event = threading.Event()
@@ -45,24 +42,16 @@ class WifiSecurityTrayApp:
             if self.settings.enabled:
                 self._scan_once()
             else:
-                self.current_assessment = RiskAssessment(
-                    RiskLevel.PAUSED,
-                    "Protection is paused.",
-                )
+                self.current_assessment = RiskAssessment(RiskLevel.PAUSED, "Protection is paused.",)
                 self._refresh_tray()
 
             self.stop_event.wait(self.settings.scan_interval_seconds)
 
-    def _scan_once(self) -> None:
+    def _scan_once(self, force_log: bool = False) -> None:
         try:
             network = get_wifi_network(self.settings)
             assessment = assess_network(network, self.settings)
-            assessment = apply_protection_policy(
-                network,
-                assessment,
-                self.settings,
-                self.launched_vpn_networks,
-            )
+            assessment = apply_protection_policy(network, assessment, self.settings, self.launched_vpn_networks,)
         except Exception as exc:
             network = WifiNetwork(None, None, None, None, None, False)
             assessment = RiskAssessment(RiskLevel.UNKNOWN, f"Scan failed: {exc}")
@@ -77,17 +66,13 @@ class WifiSecurityTrayApp:
         self.current_assessment = assessment
         self._refresh_tray()
 
-        if changed:
+        if changed or force_log:
             write_event(AuditEvent.from_assessment(network, assessment))
 
         if assessment.level == RiskLevel.RISKY:
             self._notify_risky_network(network, assessment)
 
-    def _notify_risky_network(
-        self,
-        network: WifiNetwork,
-        assessment: RiskAssessment,
-    ) -> None:
+    def _notify_risky_network(self, network: WifiNetwork, assessment: RiskAssessment,) -> None:
         if not self.settings.notify_on_risky_network:
             return
 
@@ -146,11 +131,7 @@ class WifiSecurityTrayApp:
         save_settings(self.settings)
         self.icon.update_menu()
 
-    def _trust_current_network(
-        self,
-        icon: pystray.Icon,
-        item: pystray.MenuItem,
-    ) -> None:
+    def _trust_current_network(self, icon: pystray.Icon, item: pystray.MenuItem,) -> None:
         if not self.current_network.ssid:
             notify("Wi-Fi Security Tray", "No active Wi-Fi network to trust.")
             return
@@ -163,10 +144,7 @@ class WifiSecurityTrayApp:
             from core.config import TrustedNetwork
 
             self.settings.trusted_networks.append(
-                TrustedNetwork(
-                    ssid=self.current_network.ssid,
-                    bssid=self.current_network.bssid,
-                )
+                TrustedNetwork(ssid=self.current_network.ssid,bssid=self.current_network.bssid,)
             )
             save_settings(self.settings)
 
@@ -181,27 +159,15 @@ class WifiSecurityTrayApp:
             notify("VPN launch unavailable", "Set a VPN command in Settings first.")
 
     def _scan_now(self, icon: pystray.Icon, item: pystray.MenuItem) -> None:
-        self._scan_once()
+        self._scan_once(force_log=True)
 
-    def _open_network_details(
-        self,
-        icon: pystray.Icon,
-        item: pystray.MenuItem,
-    ) -> None:
-        open_network_details_window(
-            self.current_network,
-            self.current_assessment,
-            self.settings,
-        )
+    def _open_network_details(self, icon: pystray.Icon, item: pystray.MenuItem,) -> None:
+        open_network_details_window(self.current_network, self.current_assessment, self.settings,)
 
     def _open_log_viewer(self, icon: pystray.Icon, item: pystray.MenuItem) -> None:
         open_log_viewer_window()
 
-    def _open_trusted_networks(
-        self,
-        icon: pystray.Icon,
-        item: pystray.MenuItem,
-    ) -> None:
+    def _open_trusted_networks(self, icon: pystray.Icon, item: pystray.MenuItem,) -> None:
         open_trusted_networks_window(on_save=self._settings_saved)
 
     def _open_settings(self, icon: pystray.Icon, item: pystray.MenuItem) -> None:
