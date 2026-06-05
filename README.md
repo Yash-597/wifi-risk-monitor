@@ -18,6 +18,28 @@ WiFi Risk Monitor is a Windows tray-based security utility that monitors the act
 - Integrates with an existing VPN app/profile
 - Can be packaged as a standalone Windows executable and installer
 
+## Screenshots
+
+### Risky Wi-Fi Simulation
+
+![Risky Wi-Fi simulation](assets/screenshots/risky-simulation.png)
+
+### Settings Window
+
+![Settings window](assets/screenshots/settings-window.png)
+
+### Event Log Viewer
+
+![Event log viewer](assets/screenshots/event-log.png)
+
+### Trusted Networks Manager
+
+![Trusted networks manager](assets/screenshots/trusted-networks.png)
+
+### Network Details
+
+![Network details](assets/screenshots/network-details.png)
+
 ## Run From Source
 
 ```powershell
