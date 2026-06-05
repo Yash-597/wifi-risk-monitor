@@ -25,77 +25,113 @@ python -m venv .venv
 .\.venv\Scripts\activate
 pip install -r requirements.txt
 python -m app.main
+```
 
-Test Risky Wi-Fi With Simulation
+## Test Risky Wi-Fi With Simulation
+
 Open the tray menu:
 
+```text
 Right-click tray icon -> Settings -> Use simulated Wi-Fi -> Save
+```
+
 Example simulated risky network:
 
+```text
 SSID: Free Public WiFi
 BSSID: 11:22:33:44:55:66
 Authentication: Open
 Cipher: None
 Signal: 82%
 Connected: checked
+```
+
 Then run:
 
+```text
 Right-click tray icon -> Scan Now
+```
+
 Expected result:
 
-Tray icon turns red
-Status changes to risky
-Windows notification appears
-Event is written to the audit log
+- Tray icon turns red
+- Status changes to risky
+- Windows notification appears
+- Event is written to the audit log
+
 To return to real Wi-Fi detection, disable simulation from Settings.
 
-VPN Integration
+## VPN Integration
+
 The app does not provide a VPN service. It integrates with a VPN already installed or configured by the user.
 
 Protection modes:
 
-notify_only: warn when risky Wi-Fi is detected
-require_vpn: mark risky Wi-Fi as protected only when VPN is active
-launch_vpn: run the configured VPN command when risky Wi-Fi is detected
+- `notify_only`: warn when risky Wi-Fi is detected
+- `require_vpn`: mark risky Wi-Fi as protected only when VPN is active
+- `launch_vpn`: run the configured VPN command when risky Wi-Fi is detected
+
 Example VPN commands:
 
+```text
 rasdial MyVpnProfile
 start "" "C:\Program Files\Proton\VPN\ProtonVPN.Launcher.exe"
+```
 
-Build Executable
+## Build Executable
+
+```powershell
 .\scripts\build_exe.ps1
+```
+
 Output:
 
+```text
 dist\WifiSecurityTray.exe
+```
 
-Build Installer
+## Build Installer
+
 Install Inno Setup 6, build the executable, then run:
 
+```powershell
 .\scripts\build_installer.ps1
+```
+
 Output:
 
+```text
 packaging\Output\WifiSecurityTraySetup.exe
+```
+
 Installed app data is stored in:
 
+```text
 %LOCALAPPDATA%\WifiSecurityTray
+```
 
-Project Structure
+## Project Structure
+
+```text
 app/          Tray application and Tkinter windows
 core/         Config, models, risk engine, protection logic, audit logging
 platforms/   Windows-specific Wi-Fi, VPN, process, and notification adapters
 scripts/     Build scripts for executable and installer
 packaging/   Inno Setup installer script
 tests/       Unit tests
-
-Tech Stack
-Python
-PyStray
-Tkinter
-Winotify
-Pillow
-PyInstaller
-Inno Setup
-unittest
-Status
-The project is under active development as a Windows Wi-Fi security monitoring utility.
 ```
+
+## Tech Stack
+
+- Python
+- PyStray
+- Tkinter
+- Winotify
+- Pillow
+- PyInstaller
+- Inno Setup
+- unittest
+
+## Status
+
+The project is under active development as a Windows Wi-Fi security monitoring utility.
