@@ -20,9 +20,17 @@ WiFi Risk Monitor is a Windows tray-based security utility that monitors the act
 
 ## Screenshots
 
+### Tray Menu
+
+![Tray menu](assets/screenshots/tray-menu.png)
+
 ### Risky Wi-Fi Simulation
 
 ![Risky Wi-Fi simulation](assets/screenshots/risky-simulation.png)
+
+### Risky Wi-Fi Notification
+
+![Risky Wi-Fi notification](assets/screenshots/risky-notification.png)
 
 ### Settings Window
 
