@@ -25,7 +25,8 @@ python -m venv .venv
 .\.venv\Scripts\activate
 pip install -r requirements.txt
 python -m app.main
-Test Risky Wi-Fi With Simulation
+
+##Test Risky Wi-Fi With Simulation
 Open the tray menu:
 
 Right-click tray icon -> Settings -> Use simulated Wi-Fi -> Save
@@ -48,7 +49,7 @@ Windows notification appears
 Event is written to the audit log
 To return to real Wi-Fi detection, disable simulation from Settings.
 
-VPN Integration
+##VPN Integration
 The app does not provide a VPN service. It integrates with a VPN already installed or configured by the user.
 
 Protection modes:
@@ -60,12 +61,13 @@ Example VPN commands:
 
 rasdial MyVpnProfile
 start "" "C:\Program Files\Proton\VPN\ProtonVPN.Launcher.exe"
-Build Executable
+
+##Build Executable
 .\scripts\build_exe.ps1
 Output:
 
 dist\WifiSecurityTray.exe
-Build Installer
+##Build Installer
 Install Inno Setup 6, build the executable, then run:
 
 .\scripts\build_installer.ps1
@@ -75,14 +77,15 @@ packaging\Output\WifiSecurityTraySetup.exe
 Installed app data is stored in:
 
 %LOCALAPPDATA%\WifiSecurityTray
-Project Structure
+
+##Project Structure
 app/          Tray application and Tkinter windows
 core/         Config, models, risk engine, protection logic, audit logging
 platforms/   Windows-specific Wi-Fi, VPN, process, and notification adapters
 scripts/     Build scripts for executable and installer
 packaging/   Inno Setup installer script
 tests/       Unit tests
-Tech Stack
+##Tech Stack
 Python
 PyStray
 Tkinter
@@ -91,5 +94,6 @@ Pillow
 PyInstaller
 Inno Setup
 unittest
-Status
+
+##Status
 The project is under active development as a Windows Wi-Fi security monitoring utility.
